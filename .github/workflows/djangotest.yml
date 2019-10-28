@@ -37,6 +37,7 @@ jobs:
         cp cockroach-v19.2*/cockroach cockroach_exec
         ./cockroach_exec start --insecure --background
     - name: Run tests
-      run: |        
+      run: |
+        pwd        
         cp ../../teamcity-build/cockroach_settings.py .
         python3 ../../teamcity-build/runtests.py
