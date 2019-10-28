@@ -30,12 +30,13 @@ jobs:
         pip3 install -e ..
         pip3 install -r requirements/py3.txt
         pip3 install -r requirements/postgres.txt
-    - name: Run tests
+    - name: Run cockroach
       run: |
         wget "https://binaries.cockroachdb.com/cockroach-v19.2.0-rc.1.linux-amd64.tgz"
         tar -xvf cockroach-v19.2*
         cp cockroach-v19.2*/cockroach cockroach_exec
-        ./cockroach_exec start --insecure &
-        
+        ./cockroach_exec start --insecure --background
+    - name: Run tests
+      run: |        
         cp ../../teamcity-build/cockroach_settings.py .
         python3 ../../teamcity-build/runtests.py
