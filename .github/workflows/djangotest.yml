@@ -19,7 +19,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install cockroach dependencies
       run: |
-        apt-get install -y libpq-dev
+        sudo apt-get install -y libpq-dev
         pip3 install .
         
     - name: Install django dependencies
