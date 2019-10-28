@@ -17,28 +17,22 @@ jobs:
       uses: actions/setup-python@v1
       with:
         python-version: ${{ matrix.python-version }}
-    - name: Install dependencies
+    - name: Install cockroach dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
-    - name: Lint with flake8
-      run: |
-        pip install flake8
-        # stop the build if there are Python syntax errors or undefined names
-        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-    - name: Test with pytest
-      run: |
         pip3 install psycopg2-binary
         pip3 install .
+        
+    - name: Install django dependencies
+      run: |
         git clone --depth 1 --single-branch --branch cockroach-2.2.x https://github.com/timgraham/django _django_repo
         
         cd _django_repo/tests/
         pip3 install -e ..
         pip3 install -r requirements/py3.txt
         pip3 install -r requirements/postgres.txt
-        
+    - name: Run tests
+      run: |
         wget "https://binaries.cockroachdb.com/cockroach-v19.2.0-rc.1.linux-amd64.tgz"
         tar -xvf cockroach-v19.2*
         cp cockroach-v19.2*/cockroach cockroach_exec
